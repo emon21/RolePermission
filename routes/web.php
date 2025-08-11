@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 
@@ -42,6 +43,21 @@ Route::get('test',function(){
 
 Route::middleware(['auth' => 'verified'])->group(function () {
     Route::get('user-logout', [UserController::class, 'logout'])->name('user-logout');
+    # All Roles Route
+    // Route::resource('role',RoleController::class);
+
+    Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+
+    Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('roles/store', [RoleController::class, 'store'])->name('roles.store');
+
+    Route::get('roles/show/{role}', [RoleController::class, 'show'])->name('roles.show');
+
+    Route::get('roles/edit/{role}', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('roles/update/{role}', [RoleController::class, 'update'])->name('roles.update');
+
+    Route::delete('roles/delete/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 });
+
 
 require __DIR__.'/auth.php';
