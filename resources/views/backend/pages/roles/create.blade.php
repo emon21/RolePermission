@@ -22,7 +22,7 @@
     </div>
     <!--end breadcrumb-->
     <div class="row">
-        <div class="col-lg-8 mx-auto">
+        <div class="col-lg-12 mx-auto">
             <div class="card">
                 <div class="card-body p-4">
                     <h5 class="mb-4">Create Role</h5>
@@ -31,36 +31,85 @@
                         <div class="form-group mb-3">
                             <label for="name" class="col-sm-3 col-form-label">Role Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
-                                    placeholder="Enter Your Role Name">
+                                <input type="text" class="form-control" id="name" name="name"
+                                    value="{{ old('name') }}" placeholder="Enter Your Role Name">
                             </div>
 
                         </div>
-                        <div class="form-group mb-3">
-                            <label class="col-sm-3 col-form-label">Permissions</label>
-                            <div class="col-sm-9 form-check">
-                             
-                                @foreach($permissions AS $permission)
-                                <label class="form-check-label mt-1 d-flex gap-1">
-                                    <input type="checkbox" name="permission[{{$permission->id}}]" value="{{$permission->id}}" class="form-check-input">
-                                    {{ $permission->name }}
-                                </label>
-                                @endforeach
-                                
-                            </div>
+
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="checkbox" id="selectAll" />
+                            <label class="form-check-label" for="selectAll">Permission All</label>
                         </div>
+
+                        <!-- Example child checkboxes -->
+
+                        <div class="form-check-inline grid align-items-center mb-3 border-b-4">
+                            @foreach ($permissions as $permission)
+                                <label class="form-check-label">
+                                    <input class="form-check-input child-checkbox" type="checkbox"
+                                        name="permission[{{ $permission->id }}]" value="{{ $permission->id }}"
+                                        id="{{ $permission->id }}">
+                                    <span class="text-capitalize">{{ $permission->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+
+
                         <div class="row">
                             <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button type="submit" class="btn btn-primary px-4">Save</button>
+                                    <button type="submit" class="btn btn-primary px-4">Create Role</button>
                                 </div>
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
     <!-- end-content -->
 @endsection
+@push('script')
+    <script>
+        // const selectAll = document.getElementById('selectAll');
+
+        // const checkboxes = document.querySelectorAll('.child-checkbox');
+
+        // // When "Select All" is clicked
+        // selectAll.addEventListener('change', function() {
+        //     checkboxes.forEach(cb => cb.checked = this.checked);
+        // });
+
+        // // If all are selected individually, auto-check "Select All"
+        // checkboxes.forEach(cb => {
+        //     cb.addEventListener('change', function() {
+        //         selectAll.checked = [checkboxes].every(cb => cb.checked);
+        //     });
+        // });
+
+
+        // Get the select all checkbox
+        const selectAll = document.getElementById('selectAll');
+
+        // Get all child checkboxes
+        const checkboxes = document.querySelectorAll('.child-checkbox');
+
+        // When selectAll is clicked
+        selectAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => {
+                cb.checked = this.checked;
+            });
+        });
+
+        // If all child checkboxes are checked manually, auto-check "Select All"
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const allChecked = Array.from(checkboxes).every(item => item.checked);
+                selectAll.checked = allChecked;
+            });
+        });
+    </script>
+@endpush

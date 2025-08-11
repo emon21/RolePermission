@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('test',function(){
+Route::get('test', function () {
     return view('backend.pages.auth.login');
 });
 
@@ -57,7 +57,26 @@ Route::middleware(['auth' => 'verified'])->group(function () {
     Route::put('roles/update/{role}', [RoleController::class, 'update'])->name('roles.update');
 
     Route::delete('roles/delete/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+    # Permission Route List
+
+    # User Route List
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+
+    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+
+    // Route::post('users/store', [UserController::class, 'store'])->name('users.store');
+
+    // Route::get('users/show/{user}', [UserController::class, 'show'])->name('users.show');
+    // Route::get('users/edit/{user}', [UserController::class, 'show'])->name('user.show');
+
+    // Route::get('users/edit/{user}', [UserController::class, 'edit'])->name('users.edit');
+    // Route::put('users/update/{user}', [UserController::class, 'update'])->name('users.update');
+
+
+
+
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
