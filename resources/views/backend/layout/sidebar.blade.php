@@ -49,7 +49,7 @@
                         </li>
 
                         <li>
-                            <a href="roles-create.html"><i class='bx bx-radio-circle'></i>Create Role</a>
+                            <a href="{{ route('permission.index') }}"><i class='bx bx-radio-circle'></i>All Permission</a>
                         </li>
                     </ul>
                 </li>

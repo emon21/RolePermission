@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,16 @@ Route::middleware(['auth' => 'verified'])->group(function () {
     Route::delete('roles/delete/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     # Permission Route List
+    Route::get('permission',[PermissionController::class,'index'])->name('permission.index');
 
+    Route::get('permission/create',[PermissionController::class, 'create'])->name('permission.create');
+    Route::post('permission/store',[PermissionController::class, 'store'])->name('permission.store');
+
+    Route::get('permission/edit/{permission}',[PermissionController::class, 'edit'])->name('permission.edit');
+    Route::put('permission/update/{permission}',[PermissionController::class, 'update'])->name('permission.update');
+
+    Route::delete('permission/destroy/{permission}',[PermissionController::class, 'destroy'])->name('permission.destroy');
+    
     # User Route List
     Route::get('users', [UserController::class, 'index'])->name('users.index');
 
