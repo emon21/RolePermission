@@ -38,7 +38,8 @@
                                         <p class="mb-0">Please log in to your account</p>
                                     </div>
                                     <div class="form-body">
-                                        <form action="" class="row g-3" method="post">
+                                        <form action="{{ route('login') }}" class="row g-3" method="post">
+                                            @csrf
                                             <div class="col-12">
                                                 <label for="inputEmailAddress" class="form-label">Email</label>
                                                 <input type="email" name="email" class="form-control"

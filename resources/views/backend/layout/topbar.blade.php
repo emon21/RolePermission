@@ -378,8 +378,8 @@
                             <img src="{{ asset('backend') }}/assets/images/avatars/avatar-2.png" class="user-img"
                                 alt="user avatar">
                             <div class="user-info">
-                                <p class="user-name mb-0">Mazbaul</p>
-                                <p class="designattion mb-0">mazbaul@gmail.com</p>
+                                <p class="user-name mb-0">Hi,{{ Auth::user()->name }}</p>
+                                <p class="designattion mb-0">{{ Auth::user()->email }}</p>
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -397,7 +397,7 @@
                                 <div class="dropdown-divider mb-0"></div>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('user-logout') }}"><i
                                         class="bx bx-log-out-circle"></i><span>Logout</span></a>
                             </li>
                         </ul>
