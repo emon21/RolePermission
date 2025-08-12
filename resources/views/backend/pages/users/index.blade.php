@@ -27,7 +27,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5">
-                    <table id="myTable" class="display table table-striped table-bordred">
+                    <table id="myTable" class="display table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -46,14 +46,18 @@
                                 <td>{{ $user->name }}</td>
                                 <td>
                                     @foreach ($user->roles as $role)
-                                    <span class="badge bg-danger">{{ $role->name }}</span>
+                                    <span class="badge bg-success py-1">{{ $role->name }}</span>
                                     @endforeach
                                    
                                 </td>
                                 <td>{{ $user->email }}</td>
                                 <td class="d-flex gap-2">
-                                    <a href="#" class="btn btn-primary btn-small">edit</a>
-                                    <button type="submit" class="btn btn-danger btn-small">delete</button>
+                                    <a href="{{ route('users.edit',$user->id) }}" class="btn btn-primary btn-small">Edit</a>
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
                                 </td>
                             </tr>
                             @endforeach
