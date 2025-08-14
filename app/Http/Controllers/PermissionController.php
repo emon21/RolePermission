@@ -34,10 +34,15 @@ class PermissionController extends Controller
         //
         # Validation
         $request->validate([
-            'name' => 'required|unique:permissions,name'
+            'name' => 'required|unique:permissions,name',
+            'group_name' => 'required',
         ]);
 
         $permission->name = Str::slug($request->name);
+        $groupName = $request->group_name;
+        // $permission->group_name = preg_replace('/(\w)(?=[A-Z])/', '$1-$2', $groupName);
+
+        $permission->group_name = Str::kebab( $groupName);
         $permission->save();
         return redirect()->route('permission.index');
     }

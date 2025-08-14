@@ -33,6 +33,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Permission Name</th>
+                                <th>Group Name</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -41,6 +42,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $permission->name }}</td>
+                                    <td>{{ $permission->group_name }}</td>
                                     <td class="d-flex gap-2">
                                         <a href="{{ route('permission.edit', $permission->id) }}"
                                             class="btn btn-primary">Edit</a>

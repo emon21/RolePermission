@@ -39,6 +39,18 @@
                                 @enderror
                             </div>
                         </div>
+                         <div class="row mb-3">
+                            <label for="group_name" class="col-sm-3 col-form-label">Group Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control @error('group_name') is-invalid @enderror"
+                                    id="name" name="group_name" value="{{ old('group_name') }}" placeholder="Enter Your Group Name">
+                                @error('group_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
 
                         <div class="row">
                             <label class="col-sm-3 col-form-label"></label>

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -14,29 +15,90 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+
+        # Create Roles
+        $rolesSuperAdmin = Role::create(['name' => 'superadmin']);
+        // $rolesAdmin = Role::create(['name' => 'admin']);
+        $rolesEditor = Role::create(['name' => 'editor']);
+        $rolesUser = Role::create(['name' => 'user']);
 
         # Permission List
 
         $permissions = [
-            'user-menu','user-list', 'user-create', 'user-edit', 'user-delete',
-            'role-menu','role-list', 'role-create', 'role-edit', 'role-delete',
-            'product-menu','product-list','product-create', 'product-edit', 'product-delete'
-            // 'permission-menu', 'permission-create', 'permission-edit', 'permission-delete',
-            // 'category-menu', 'category-create', 'category-edit', 'category-delete',
-            // 'blog-menu', 'blog-create', 'blog-edit', 'blog-delete',
-            // 'setting-menu', 'setting-edit', 'setting-delete',
-            // 'slider-menu', 'slider-create', 'slider-edit', 'slider-delete',
-            // 'order-menu', 'order-create', 'order-edit', 'order-delete',
-            // 'contact-menu', 'contact-create', 'contact-edit', 'contact-delete',
-            // 'about-menu', 'about-create', 'about-edit', 'about-delete',
-            // 'faq-menu', 'faq-create', 'faq-edit', 'faq-delete',
-            // 'brand-menu', 'brand-create', 'brand-edit', 'brand-delete'
+
+            // Dashboard Permissions
+            [
+                'group_name' => 'dashboard',
+                'permissions' => [
+                    'dashboard-view',
+                    'dashboard-edit',
+                ]
+            ],
+
+            // Profile Permissions
+            [
+                'group_name' => 'profile',
+                'permissions' => [
+                    'profile - edit',
+                    'profile - view'
+                ]
+            ],
+
+            // Admin Permissions
+            [
+                'group_name' => 'admin',
+                'permissions' => [
+                    'admin-menu',
+                    'admin-create',
+                    'admin-edit',
+                    'admin-delete',
+                    'admin-view',
+                ]
+            ],
+
+            // Role Permissions
+            [
+                'group_name' => 'role',
+                'permissions' => [
+                    'role-menu',
+                    'role-create',
+                    'role-edit',
+                    'role-delete',
+                    'role-view',
+                ]
+            ],
+
+            // Blog Permissions
+            [
+                'group_name' => 'blog',
+                'permissions' => [
+                    'blog-menu',
+                    'blog-create',
+                    'blog-edit',
+                    'blog-delete',
+                    'blog-view'
+                ]
+            ]
+
         ];
 
-        foreach($permissions AS $permission){
-           Permission::create(['name' => $permission]);
-           
+
+        # Create and Assign Permissions
+
+        for ($i = 0; $i < count($permissions); $i++) {
+
+            $permissionGroup = $permissions[$i]['group_name'];
+
+            for ($j = 0; $j < count($permissions[$i]['permissions']); $j++) {
+
+                //Create Permissions
+                $permission = Permission::create(['name' => $permissions[$i]['permissions'][$j], 'group_name' => $permissionGroup]);
+
+                //Assign Permission to Roles
+                $rolesSuperAdmin->givePermissionTo($permission);
+                $permission->assignRole($rolesSuperAdmin);
+
+            }
         }
     }
 }

@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-body p-4">
                     <h5 class="mb-4">Create Role</h5>
-                    <form action="{{ route('roles.update',$role) }}" method="post">
+                    <form action="{{ route('roles.update', $role) }}" method="post">
                         @csrf
                         @method('PUT')
                         {{-- <input type="hidden" value="{{ $role->id }}" name="id"> --}}
@@ -37,31 +37,56 @@
                                     value="{{ old('name', $role->name) }}" placeholder="Enter Your Role Name">
                             </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label class="col-sm-3 col-form-label">Permissions</label>
-                            <div class="col-sm-9 form-check">
+                        <h4>Permissions :</h4>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="selectAll">
+                            <label class="form-check-label" for="selectAll">Select All</label>
+                        </div>
 
-                                @foreach ($permissions as $permission)
-                                    {{-- <label class="form-check-label mt-1 d-flex gap-1">
-                                    <input type="checkbox" name="permission[{{$permission->id}}]" value="{{$permission->id}}" class="form-check-input" {{ ($role->id == $permission->id) ? 'checked' : '' }}>
-                                    {{ $permission->name }}
-                                     {{  ($role->id == $permission->id) ? 'checked' : '' }}
-                                </label> --}}
-
-                                    {{-- {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }} --}}
-
-
-                                    <div class="form-check">
-                                        <label class="form-check-label">{{ $permission->name }}
-                                            <input class="form-check-input" type="checkbox" id="check1"
-                                                name="permission[{{ $permission->id }}]" value="{{ $permission->id }}"
-                                                {{ in_array($permission->id, $rolePermission) ? 'checked' : '' }}>
-                                        </label>
+                        <div class="">
+                            @foreach ($permission_group as $group)
+                                <div class="permissions-wrapper row px-3 py-2">
+                                    <div class="col-sm-3">
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label d-flex gap-1">
+                                                <input type="checkbox"
+                                                    class="form-check-input group-checkbox @error('groups.' . $group->group_name) is-invalid
+                                                    @enderror"
+                                                    name="groups[]" value="{{ $group->group_name }}" {{ in_array($group->group_name, $rolePermission) ? 'checked' : '' }}>
+                                                {{ $group->group_name }}
+                                            </label>
+                                            @error('groups.' . $group->group_name)
+                                            @enderror
+                                        </div>
                                     </div>
-                                @endforeach
 
-
-                            </div>
+                                    <div class="col-sm-9">
+                                        @php
+                                            $permissions = \App\models\User::getpermissionsByGroupName(
+                                                $group->group_name,
+                                            );
+                                        @endphp
+                                        @foreach ($permissions as $permission)
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label d-flex gap-1"
+                                                    for="checkPermission{{ $permission->id }}">
+                                                    <input type="checkbox"
+                                                        class="form-check-input permission-checkbox @error('permission') is-invalid
+                                                    @enderror"
+                                                        name="permission[{{ $permission->id }}]"
+                                                        value="{{ $permission->id }}"
+                                                        id="checkPermission{{ $permission->id }}"
+                                                        {{ in_array($permission->id, $rolePermission) ? 'checked' : '' }}>
+                                                    {{ $permission->name }}
+                                                </label>
+                                                @error('permission')
+                                                @enderror
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <hr>
+                            @endforeach
                         </div>
                         <div class="row">
                             <label class="col-sm-3 col-form-label"></label>
@@ -78,3 +103,44 @@
     </div>
     <!-- end-content -->
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectAllCheckbox = document.getElementById('selectAll');
+
+        // Select All
+        selectAllCheckbox.addEventListener('change', function() {
+            document.querySelectorAll('.form-check-input').forEach(cb => {
+                cb.checked = selectAllCheckbox.checked;
+            });
+        });
+
+        // Group wise select
+        document.querySelectorAll('.group-checkbox').forEach(groupCheckbox => {
+            groupCheckbox.addEventListener('change', function() {
+                let groupDiv = groupCheckbox.closest('.permissions-wrapper');
+                let permissionCheckboxes = groupDiv.querySelectorAll('.permission-checkbox');
+                permissionCheckboxes.forEach(cb => cb.checked = groupCheckbox.checked);
+                checkSelectAll();
+            });
+        });
+
+        // Single permission change
+        document.querySelectorAll('.permission-checkbox').forEach(permissionCheckbox => {
+            permissionCheckbox.addEventListener('change', function() {
+                let groupDiv = permissionCheckbox.closest('.permissions-wrapper');
+                let groupCheckbox = groupDiv.querySelector('.group-checkbox');
+                let permissionCheckboxes = groupDiv.querySelectorAll('.permission-checkbox');
+                groupCheckbox.checked = Array.from(permissionCheckboxes).every(cb => cb
+                    .checked);
+                checkSelectAll();
+            });
+        });
+
+        // Check if all are selected for "Select All"
+        function checkSelectAll() {
+            const allCheckboxes = document.querySelectorAll('.form-check-input:not(#selectAll)');
+            selectAllCheckbox.checked = Array.from(allCheckboxes).every(cb => cb.checked);
+        }
+    });
+</script>
