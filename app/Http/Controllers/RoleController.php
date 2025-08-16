@@ -179,6 +179,7 @@ class RoleController extends Controller
         # Role wise Permission
         // $role = Role::with('Permissions')->find($role->id);
         $role = Role::with('Permissions')->find($role->id);
+        // return $role['name'];
 
         // return $rolePermission = $role->Permissions->pluck('id')->toArray();
 

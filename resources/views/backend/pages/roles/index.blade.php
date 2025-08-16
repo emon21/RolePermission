@@ -1,4 +1,19 @@
 @extends('backend.layout.app')
+<style>
+    .collapse-box {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease, opacity 0.5s ease;
+        /* transition: all ease-in-out 0.5s; */
+        opacity: 0;
+    }
+
+    .collapse-box.show {
+        max-height: 300px;
+        /* adjust depending on content */
+        opacity: 1;
+    }
+</style>
 @section('content')
     <!-- start-content -->
 
@@ -24,6 +39,7 @@
     </div>
     <!--end breadcrumb-->
     <h6 class="mb-0 text-uppercase">Role and Permissions</h6>
+
     <hr>
     @can('role-menu')
         <div class="card">
@@ -43,21 +59,38 @@
                                 @foreach ($roles as $role)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $role->name }}</td>
+                                        <td class="text-capitalize">{{ $role->name }}</td>
                                         <td>
-                                            @foreach ($role->Permissions as $permission)
-                                                <span class="badge bg-primary">{{ $permission->name }}</span>
-                                            @endforeach
+
+                                            <!-- Icon -->
+                                            {{-- <p class="text-success text-capitalize">See Permission</p> --}}
+                                            <button type="button"
+                                                class="toggleBtn bg-primary text-white border-0 rounded py-1 px-2"
+                                                data-target="data-{{ $role->id }}">
+                                                <i class="fas fa-eye show-icon"></i>
+                                                <i class="fas fa-eye-slash hide-icon" style="display:none;"></i>
+                                            </button>
+
+                                            <!-- Hidden Data with animation -->
+                                            <div id="data-{{ $role->id }}" class="toggleData collapse-box">
+                                                @foreach ($role->Permissions as $permission)
+                                                    <span
+                                                        class="badge bg-primary text-capitalize my-1 mb-1">{{ $permission->name }}</span>
+                                                @endforeach
+                                            </div>
+
                                         </td>
                                         <td class="d-flex gap-2">
                                             @can('role-edit')
-                                                <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-primary">Edit</a>
+                                                <a href="{{ route('roles.edit', $role->id) }}"
+                                                    class="btn btn-primary btn-sm">Edit</a>
                                             @endcan
+
                                             @can('role-delete')
                                                 <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                                 </form>
                                             @endcan
                                         </td>
@@ -75,22 +108,48 @@
 @endsection
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const buttons = document.querySelectorAll(".toggleBtn");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function() {
+                const targetId = this.getAttribute("data-target");
+                const target = document.getElementById(targetId);
+
+                const showIcon = this.querySelector(".show-icon");
+                const hideIcon = this.querySelector(".hide-icon");
+
+                if (target.classList.contains("show")) {
+                    target.classList.remove("show");
+
+                    // icon change
+                    showIcon.style.display = "inline";
+                    hideIcon.style.display = "none";
+
+                    // button color reset
+                    this.classList.remove("bg-danger");
+                    this.classList.add("bg-primary");
+                } else {
+                    target.classList.add("show");
+
+                    // icon change
+                    showIcon.style.display = "none";
+                    hideIcon.style.display = "inline";
+
+                    // button color change
+                    this.classList.remove("bg-primary");
+                    this.classList.add("bg-danger");
+                }
+            });
+        });
+    });
+
+    // DataTable
     let table = new DataTable('#myTable', {
         "pageLength": 5,
         "lengthMenu": [
             [5, 10, 25, 50, -1],
             [5, 10, 25, 50, "All"]
         ]
-    });
-</script>
-
-<script>
-    // document.getElementById('showBtn').addEventListener('click', function () {
-    //     document.getElementById('myDiv').style.display = 'block';
-    // });
-
-    document.getElementById('toggleBtn').addEventListener('click', function() {
-        let div = document.getElementById('details');
-        div.style.display = (div.style.display === 'none' || div.style.display === '') ? 'block' : 'none';
     });
 </script>

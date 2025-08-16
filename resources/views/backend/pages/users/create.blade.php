@@ -15,7 +15,7 @@
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <a href="{{route('users.index')}}" class="btn btn-primary">All Users</a>
+                <a href="{{ route('users.index') }}" class="btn btn-primary">All Users</a>
             </div>
         </div>
     </div>
@@ -59,18 +59,35 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <label for="role" class="col-sm-3 col-form-label">Select Role</label>
                             <div class="col-sm-9">
                                 <select class="form-select" name="roles[]" multiple>
                                     <option selected="" disabled>Select Roles</option>
-                                    @foreach($roles AS $role)
-                                    <option value="{{ $role->name  }}">{{ $role->name }}</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
 
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">Select Role</label>
+                            <div class="col-sm-9">
+                                <div class="d-flex gap-2">
+                                    @foreach ($roles as $role)
+                                        <div class="form-check form-check-danger">
+                                            <input class="form-check-input" type="checkbox" value="{{ $role->name }}"
+                                                id="flexCheckSuccess-{{ $role->id }}" name="roles[]">
+                                            <label class="form-check-label text-capitalize"
+                                                for="flexCheckSuccess-{{ $role->id }}">
+                                                {{ $role->name }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">

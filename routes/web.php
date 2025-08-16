@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -49,43 +50,43 @@ Route::middleware(['auth'])->group(function () {
     // Route::resource('role',RoleController::class);
 
     Route::get('roles', [RoleController::class, 'index'])
-    ->middleware('permission:role-menu')
-    ->name('roles.index');
+        ->middleware('permission:role-menu')
+        ->name('roles.index');
 
     Route::get('roles/create', [RoleController::class, 'create'])
-    ->middleware('permission:role-create')
-    ->name('roles.create');
+        ->middleware('permission:role-create')
+        ->name('roles.create');
     Route::post('roles/store', [RoleController::class, 'store'])
-    ->middleware('permission:role-create')
-    ->name('roles.store');
+        ->middleware('permission:role-create')
+        ->name('roles.store');
 
     Route::get('roles/show/{role}', [RoleController::class, 'show'])
-    ->middleware('permission:role-view')
-    ->name('roles.show');
+        ->middleware('permission:role-view')
+        ->name('roles.show');
 
     Route::get('roles/edit/{role}', [RoleController::class, 'edit'])
-    ->middleware('permission:role-edit')
-    ->name('roles.edit');
+        ->middleware('permission:role-edit')
+        ->name('roles.edit');
     Route::put('roles/update/{role}', [RoleController::class, 'update'])
-    ->middleware('permission:role-edit')
-    ->name('roles.update');
+        ->middleware('permission:role-edit')
+        ->name('roles.update');
 
     Route::delete('roles/delete/{role}', [RoleController::class, 'destroy'])
-    ->middleware('permission:role-delete')
-    ->name('roles.destroy');
+        ->middleware('permission:role-delete')
+        ->name('roles.destroy');
 
     # Permission Route List
-    Route::get('permission',[PermissionController::class,'index'])->name('permission.index');
+    Route::get('permission', [PermissionController::class, 'index'])->name('permission.index');
 
-    Route::get('permission/create',[PermissionController::class, 'create'])->name('permission.create');
+    Route::get('permission/create', [PermissionController::class, 'create'])->name('permission.create');
 
-    Route::post('permission/store',[PermissionController::class, 'store'])->name('permission.store');
+    Route::post('permission/store', [PermissionController::class, 'store'])->name('permission.store');
 
-    Route::get('permission/edit/{permission}',[PermissionController::class, 'edit'])->name('permission.edit');
-    Route::put('permission/update/{permission}',[PermissionController::class, 'update'])->name('permission.update');
+    Route::get('permission/edit/{permission}', [PermissionController::class, 'edit'])->name('permission.edit');
+    Route::put('permission/update/{permission}', [PermissionController::class, 'update'])->name('permission.update');
 
-    Route::delete('permission/destroy/{permission}',[PermissionController::class, 'destroy'])->name('permission.destroy');
-    
+    Route::delete('permission/destroy/{permission}', [PermissionController::class, 'destroy'])->name('permission.destroy');
+
     # User Route List
     Route::get('users', [UserController::class, 'index'])->name('users.index');
 
@@ -108,26 +109,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('products/destroy/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-    
-  
-    
+    # ============== Page Route ============== #
+
+    Route::get('pages', [PageController::class, 'index'])->name('pages.index');
+
+    Route::get('pages/create', [PageController::class, 'create'])->name('pages.create');
+    Route::post('pages/store', [PageController::class, 'store'])->name('pages.store');
+
+    Route::get('pages/edit/{page}', [PageController::class, 'edit'])->name('pages.edit');
+    Route::put('pages/update/{page}', [PageController::class, 'update'])->name('pages.update');
+
+    Route::delete('pages/delete/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
 });
 
 
 require __DIR__ . '/auth.php';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

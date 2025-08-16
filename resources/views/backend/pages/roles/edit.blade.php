@@ -53,7 +53,8 @@
                                                     class="form-check-input group-checkbox @error('groups') is-invalid
                                                     @enderror"
                                                     name="groups[]" value="{{ $group->group_name }}"
-                                                    {{ ($group->group_name == $rolePermission) ? 'checked' : '' }}>
+                                                    {{-- {{ ($group->group_name == $role->name) ? 'checked' : '' }} --}}
+                                                    {{ ($group->group_name == $role->name) ? 'checked' : '' }}>
                                                 {{ $group->group_name }}
                                             </label>
                                             @error('groups' . $group->group_name)
@@ -106,42 +107,46 @@
 @endsection
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const selectAllCheckbox = document.getElementById('selectAll');
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectAll = document.getElementById("selectAll");
+        const groupCheckboxes = document.querySelectorAll(".group-checkbox");
+        const permissionCheckboxes = document.querySelectorAll(".permission-checkbox");
 
-        // Select All
-        selectAllCheckbox.addEventListener('change', function() {
-            document.querySelectorAll('.form-check-input').forEach(cb => {
-                cb.checked = selectAllCheckbox.checked;
-            });
+        // 1. Permission All select/deselect
+        selectAll.addEventListener("change", function() {
+            const checked = this.checked;
+            groupCheckboxes.forEach(g => g.checked = checked);
+            permissionCheckboxes.forEach(p => p.checked = checked);
         });
 
-        // Group wise select
-        document.querySelectorAll('.group-checkbox').forEach(groupCheckbox => {
-            groupCheckbox.addEventListener('change', function() {
-                let groupDiv = groupCheckbox.closest('.permissions-wrapper');
-                let permissionCheckboxes = groupDiv.querySelectorAll('.permission-checkbox');
-                permissionCheckboxes.forEach(cb => cb.checked = groupCheckbox.checked);
+        // 2. Group wise checkbox
+        groupCheckboxes.forEach(group => {
+            group.addEventListener("change", function() {
+                const wrapper = this.closest(".permissions-wrapper");
+                const permissions = wrapper.querySelectorAll(".permission-checkbox");
+                permissions.forEach(p => p.checked = this.checked);
                 checkSelectAll();
             });
         });
 
-        // Single permission change
-        document.querySelectorAll('.permission-checkbox').forEach(permissionCheckbox => {
-            permissionCheckbox.addEventListener('change', function() {
-                let groupDiv = permissionCheckbox.closest('.permissions-wrapper');
-                let groupCheckbox = groupDiv.querySelector('.group-checkbox');
-                let permissionCheckboxes = groupDiv.querySelectorAll('.permission-checkbox');
-                groupCheckbox.checked = Array.from(permissionCheckboxes).every(cb => cb
-                    .checked);
+        // 3. Single permission checkbox
+        permissionCheckboxes.forEach(permission => {
+            permission.addEventListener("change", function() {
+                const wrapper = this.closest(".permissions-wrapper");
+                const group = wrapper.querySelector(".group-checkbox");
+                const permissions = wrapper.querySelectorAll(".permission-checkbox");
+
+                // যদি ওই গ্রুপের সব permission চেক থাকে তাহলে group চেক হবে
+                group.checked = [...permissions].every(p => p.checked);
                 checkSelectAll();
             });
         });
 
-        // Check if all are selected for "Select All"
+        // helper function → Permission All check করবে
         function checkSelectAll() {
-            const allCheckboxes = document.querySelectorAll('.form-check-input:not(#selectAll)');
-            selectAllCheckbox.checked = Array.from(allCheckboxes).every(cb => cb.checked);
+            const allGroupsChecked = [...groupCheckboxes].every(g => g.checked);
+            const allPermissionsChecked = [...permissionCheckboxes].every(p => p.checked);
+            selectAll.checked = allGroupsChecked && allPermissionsChecked;
         }
     });
 </script>

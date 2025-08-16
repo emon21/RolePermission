@@ -7,41 +7,27 @@ namespace App\Helpers;
 class FlashMessage
 {
 
-   // public static function addFlash(string $type, string $message, string $title = null, array $options = [])
-   // {
-   //    // Session::flash($type, $message);
-
-
-   //    flash()->addFlash([
-   //       "type"    => $type,
-   //       "message" => $message,
-   //       "title"   => $title,
-   //       "options" => $options
-   //    ]);
-   // }
-
    public static function addFlash(string $type, string $message, string $title = null)
    {
-      flash()->addFlash([
-         "type"    => $type,
-         "message" => $message,
-         "title"   => $title,
-        
-      ]);
+      // flash()->addFlash([
+      //    "type"    => $type,
+      //    "message" => $message,
+      //    "title"   => $title,
+      //    "options" => $options
+      // ]);
 
-     // flash()->addFlash( 'error', 'Your password has been reset.','Role Updated');
+      // flash()->addFlash( 'error', 'Your password has been reset.','Role Updated');
    }
 
+   // Flash Notification Helper Function
+
+   public static function AddMessage(string $type, string $message, string $title = null, array $options = [])
+   {
+     
+      flash()->addFlash($type,$message,$title,$options);
+
+   }
+
+   
 }
 
-// if (!function_exists('addFlash')) {
-//    function addFlash(string $type, string $message, string $title = null, array $options = [])
-//    {
-//       flash()->addFlash([
-//          "type"    => $type,
-//          "message" => $message,
-//          "title"   => $title,
-//          "options" => $options
-//       ]);
-//    }
-// }

@@ -8,6 +8,20 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
+
+    public function __construct()
+    {
+        // $this->middleware("auth");
+        // role-menu | role-create| role-create|role-view|role-edit|role-delete
+
+        # Permission Menu List
+
+        $this->middleware("permission:permission-menu", ["only" => ["index"]]);
+        $this->middleware("permission:permission-create", ["only" => ["create", "store"]]);
+        $this->middleware("permission:permission-edit", ["only" => ["edit", "update"]]);
+        $this->middleware("permission:permission-delete", ["only" => ["destroy"]]);
+    }
+
     /**
      * Display a listing of the resource.
      */
