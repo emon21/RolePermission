@@ -39,8 +39,8 @@ class PermissionSeeder extends Seeder
             [
                 'group_name' => 'profile',
                 'permissions' => [
-                    'profile - edit',
-                    'profile - view'
+                    'profile-edit',
+                    'profile-view'
                 ]
             ],
 
@@ -65,6 +65,19 @@ class PermissionSeeder extends Seeder
                     'role-edit',
                     'role-delete',
                     'role-view',
+                    'role-list',
+                ]
+            ],
+
+            // Role Permissions
+            [
+                'group_name' => 'permission',
+                'permissions' => [
+                    'permission-menu',
+                    'permission-create',
+                    'permission-edit',
+                    'permission-delete',
+                    'permission-view',
                 ]
             ],
 
@@ -77,6 +90,19 @@ class PermissionSeeder extends Seeder
                     'blog-edit',
                     'blog-delete',
                     'blog-view'
+                ]
+            ],
+
+            // User Permissions
+            [
+                'group_name' => 'user',
+                'permissions' => [
+                    'user-menu',
+                    'user-create',
+                    'user-edit',
+                    'user-delete',
+                    'user-view',
+                    'user-list',
                 ]
             ]
 
@@ -97,7 +123,6 @@ class PermissionSeeder extends Seeder
                 //Assign Permission to Roles
                 $rolesSuperAdmin->givePermissionTo($permission);
                 $permission->assignRole($rolesSuperAdmin);
-
             }
         }
     }

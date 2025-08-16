@@ -4,11 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+
+use App\Helpers\flashMessage;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
+
+    public function __construct()
+    {
+        // $this->middleware("auth");
+        // role-menu | role-create| role-create|role-view|role-edit|role-delete
+
+        # Role Menu List
+
+        // $this->middleware("permission:role-menu", ["only" => ["index"]]);
+        // $this->middleware("permission:role-create", ["only" => ["create", "store"]]);
+        // $this->middleware("permission:role-edit", ["only" => ["edit", "update"]]);
+        // $this->middleware("permission:role-delete", ["only" => ["destroy"]]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -195,6 +211,22 @@ class RoleController extends Controller
 
         $permissionID = array_map('intval', $request->input('permission'));
         $role->syncPermissions($permissionID);
+
+        // Add a success notification
+
+        // flash()
+        //     ->options([
+        //         'timeout' => 3000, // 3 seconds
+        //         'position' => 'top-right',
+        //     ])
+        //     ->addFlash( 'error', 'Your password has been reset.','Role Updated');
+
+       // FlashMessage::addFlash('success', 'Something went wrong!', 'Update Role');
+
+         flash()->addFlash('success', 'Role Updated Successfully Done !!', 'Updated');
+
+        // your store logic
+        //  FlashHelper::addFlash('success', 'User created successfully', 'Success');
 
         return redirect()->route('roles.index');
     }

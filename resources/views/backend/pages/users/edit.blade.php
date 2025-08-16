@@ -46,16 +46,20 @@
 
 
                         <div class="row mb-3">
-                            <label for="role" class="col-sm-3 col-form-label">Select Role</label>
+                            <label class="col-sm-3 col-form-label">Select Role :</label>
                             <div class="col-sm-9">
-                                <select class="form-select" name="roles[]" multiple>
-                                    <option ="" disabled>Select Roles</option>
+                                <div class="d-flex gap-2">
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->name }}"
-                                            {{ in_array($role->name, $userRole) ? 'selected' : '' }}>{{ $role->name }}
-                                        </option>
+                                        <div class="form-check form-check-danger">
+                                            <input class="form-check-input" type="checkbox" value="{{ $role->name }}"
+                                                id="flexCheckSuccess-{{ $role->id }}" name="roles[]"
+                                                {{ in_array($role->name, $userRole) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="flexCheckSuccess-{{ $role->id }}">
+                                                {{ $role->name }}
+                                            </label>
+                                        </div>
                                     @endforeach
-                                </select>
+                                </div>
                             </div>
                         </div>
 

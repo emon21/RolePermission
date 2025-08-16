@@ -50,12 +50,13 @@
                                         <div class="form-check-inline">
                                             <label class="form-check-label d-flex gap-1">
                                                 <input type="checkbox"
-                                                    class="form-check-input group-checkbox @error('groups.' . $group->group_name) is-invalid
+                                                    class="form-check-input group-checkbox @error('groups') is-invalid
                                                     @enderror"
-                                                    name="groups[]" value="{{ $group->group_name }}" {{ in_array($group->group_name, $rolePermission) ? 'checked' : '' }}>
+                                                    name="groups[]" value="{{ $group->group_name }}"
+                                                    {{ ($group->group_name == $rolePermission) ? 'checked' : '' }}>
                                                 {{ $group->group_name }}
                                             </label>
-                                            @error('groups.' . $group->group_name)
+                                            @error('groups' . $group->group_name)
                                             @enderror
                                         </div>
                                     </div>

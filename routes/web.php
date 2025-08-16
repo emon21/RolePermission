@@ -43,22 +43,36 @@ Route::get('test', function () {
 #logout
 // Route::middleware(['auth' => 'verified'])->get('/logout', [ProfileController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth' => 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('user-logout', [UserController::class, 'logout'])->name('user-logout');
     # All Roles Route
     // Route::resource('role',RoleController::class);
 
-    Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('roles', [RoleController::class, 'index'])
+    ->middleware('permission:role-menu')
+    ->name('roles.index');
 
-    Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
-    Route::post('roles/store', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('roles/create', [RoleController::class, 'create'])
+    ->middleware('permission:role-create')
+    ->name('roles.create');
+    Route::post('roles/store', [RoleController::class, 'store'])
+    ->middleware('permission:role-create')
+    ->name('roles.store');
 
-    Route::get('roles/show/{role}', [RoleController::class, 'show'])->name('roles.show');
+    Route::get('roles/show/{role}', [RoleController::class, 'show'])
+    ->middleware('permission:role-view')
+    ->name('roles.show');
 
-    Route::get('roles/edit/{role}', [RoleController::class, 'edit'])->name('roles.edit');
-    Route::put('roles/update/{role}', [RoleController::class, 'update'])->name('roles.update');
+    Route::get('roles/edit/{role}', [RoleController::class, 'edit'])
+    ->middleware('permission:role-edit')
+    ->name('roles.edit');
+    Route::put('roles/update/{role}', [RoleController::class, 'update'])
+    ->middleware('permission:role-edit')
+    ->name('roles.update');
 
-    Route::delete('roles/delete/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+    Route::delete('roles/delete/{role}', [RoleController::class, 'destroy'])
+    ->middleware('permission:role-delete')
+    ->name('roles.destroy');
 
     # Permission Route List
     Route::get('permission',[PermissionController::class,'index'])->name('permission.index');
@@ -93,11 +107,9 @@ Route::middleware(['auth' => 'verified'])->group(function () {
     Route::put('products/update/{product}', [ProductController::class, 'update'])->name('products.update');
 
     Route::delete('products/destroy/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-  
-    Route::get('products/restore/{product}', [ProductController::class,'restore'])->name('products.restore');
 
-    Route::get('products/trash', [ProductController::class,'trash'])->name('products.trash');
     
+  
     
 });
 
