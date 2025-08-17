@@ -72,9 +72,7 @@ class ProfileController extends Controller
 
         // $user->update($request->all());
         // User::where('id', $user->id)->update();
-       
-
-
+        
         # User Profile Setting Update
 
         $userProfile = UserProfile::where('user_id', $user->id)->first();
@@ -85,12 +83,18 @@ class ProfileController extends Controller
         $userProfile->website = $request->website;
         $userProfile->github_url = $request->github_url;
         $userProfile->facebook_url = $request->facebook_url;
+
         $userProfile->twitter_url = $request->twitter_url;
         $userProfile->linkedin_url = $request->linkedin_url;
         $userProfile->instagram_url = $request->instagram_url;
+        $userProfile->linkedin_url = $request->linkedin_url;
+        $userProfile->youtube_url = $request->youtube_url;
 
-
-
+        $userProfile->bio = $request->bio;
+        $userProfile->phone = $request->phone;
+        $userProfile->address = $request->address;
+        
+        
         // # User Profile Update
 
         if ($request->file('picture')) {
@@ -114,8 +118,8 @@ class ProfileController extends Controller
 
         $userProfile->save();
 
-
         return Redirect::route('profile')->with('success', 'profile-updated');
+
     }
 
     /**

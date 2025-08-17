@@ -178,7 +178,7 @@
                                             <div class="col-sm-3"></div>
                                             <div class="col-sm-9 text-secondary">
                                                 <input type="submit" class="btn btn-primary px-4"
-                                                    value="Update Profile"/>
+                                                    value="Update Profile" />
                                             </div>
                                         </div>
                                     </form>
@@ -286,7 +286,10 @@
                                     <h4 class="card-title">Password Change</h4>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-3">
+                                    <form action="{{ route('password.update') }}" method="POST">
+                                        @csrf
+                                        @method('put')
+                                        {{-- <div class="row mb-3">
                                         <div class="col-sm-3">
                                             <h6 class="mb-0">Old Password</h6>
                                         </div>
@@ -310,7 +313,36 @@
                                             <input type="button" class="btn btn-primary px-4"
                                                 value="Update Password Changes" />
                                         </div>
-                                    </div>
+                                    </div> --}}
+
+
+                                        <div class="mb-3">
+                                            <label for="current_password">বর্তমান পাসওয়ার্ড</label>
+                                            <input type="password" name="current_password" class="form-control"
+                                                required>
+                                            @error('current_password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="password">নতুন পাসওয়ার্ড</label>
+                                            <input type="password" name="password" class="form-control" required>
+                                            @error('password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="password_confirmation">নিশ্চিত করুন নতুন পাসওয়ার্ড</label>
+                                            <input type="password" name="password_confirmation" class="form-control"
+                                                required>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">পাসওয়ার্ড পরিবর্তন
+                                            করুন</button>
+
+
                                 </div>
                             </div>
                             <!-- Password Change Card End  -->
@@ -367,7 +399,8 @@
 
         // 3rd Example
 
-        const defaultImage = "https://www.pngplay.com/wp-content/uploads/8/Upload-Icon-Image-Transparent-Image.png"; // আপনার default image path
+        const defaultImage =
+            "https://www.pngplay.com/wp-content/uploads/8/Upload-Icon-Image-Transparent-Image.png"; // আপনার default image path
 
         function previewImage(event) {
             let input = event.target;

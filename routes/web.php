@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\PermissionController;
 
 /*
@@ -23,6 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/dashboard', function () {
     return view('backend.pages.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -34,6 +36,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Password Change Route
+    Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::put('/change-password', [PasswordController::class, 'updatePassword'])->name('password.update');
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
