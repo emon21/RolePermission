@@ -22,10 +22,10 @@ class DatabaseSeeder extends Seeder
         # Seeder Calling
         $this->call([
             // UsersTableSeeder::class,
-            PermissionSeeder::class,
             UserSeeder::class,
-            ProductSeeder::class,
-            PageSeeder::class
+            PermissionSeeder::class,
+            PageSeeder::class,
+            ProductSeeder::class
         ]);
     }
 }

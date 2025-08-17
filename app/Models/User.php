@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_Photo',
     ];
 
     /**
@@ -45,26 +46,33 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public static function getpermissionGroup(){
-        
+    public static function getpermissionGroup()
+    {
+
         // $permissions = $this->getAllPermissions();
         // $groupedPermissions = $permissions->groupBy('group_name');
         // return $groupedPermissions;
 
         $permission_group = DB::table('permissions')
-        // ->select('group_name')
-        ->select('group_name')
-        ->groupBy('group_name')
-        ->get();
+            // ->select('group_name')
+            ->select('group_name')
+            ->groupBy('group_name')
+            ->get();
         return $permission_group;
     }
 
-     public static function getpermissionsByGroupName($group_name)
+    public static function getpermissionsByGroupName($group_name)
     {
         $permissions = DB::table('permissions')
             ->select('name', 'id')
             ->where('group_name', $group_name)
             ->get();
         return $permissions;
+    }
+
+    # User Profile
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
     }
 }

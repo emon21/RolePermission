@@ -61,22 +61,23 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td class="text-capitalize">{{ $role->name }}</td>
                                         <td>
+                                            <div>
+                                                <!-- Icon -->
+                                                {{-- <p class="text-capitalize">See Permission</p> --}}
+                                                <button type="button"
+                                                    class="toggleBtn bg-primary text-white border-0 rounded py-1 px-2"
+                                                    data-target="data-{{ $role->id }}">
+                                                    <i class="fas fa-eye show-icon"></i>
+                                                    <i class="fas fa-eye-slash hide-icon" style="display:none;"></i>
+                                                </button>
 
-                                            <!-- Icon -->
-                                            {{-- <p class="text-success text-capitalize">See Permission</p> --}}
-                                            <button type="button"
-                                                class="toggleBtn bg-primary text-white border-0 rounded py-1 px-2"
-                                                data-target="data-{{ $role->id }}">
-                                                <i class="fas fa-eye show-icon"></i>
-                                                <i class="fas fa-eye-slash hide-icon" style="display:none;"></i>
-                                            </button>
-
-                                            <!-- Hidden Data with animation -->
-                                            <div id="data-{{ $role->id }}" class="toggleData collapse-box">
-                                                @foreach ($role->Permissions as $permission)
-                                                    <span
-                                                        class="badge bg-primary text-capitalize my-1 mb-1">{{ $permission->name }}</span>
-                                                @endforeach
+                                                <!-- Hidden Data with animation -->
+                                                <div id="data-{{ $role->id }}" class="toggleData collapse-box">
+                                                    @foreach ($role->Permissions as $permission)
+                                                        <span
+                                                            class="badge bg-primary text-capitalize my-1 mb-1">{{ $permission->name }}</span>
+                                                    @endforeach
+                                                </div>
                                             </div>
 
                                         </td>
