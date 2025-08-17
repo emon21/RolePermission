@@ -131,47 +131,54 @@
                                         class="mt-6 space-y-6" enctype="multipart/form-data">
                                         @csrf
                                         @method('patch')
-                                        <div class="row mb-3">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Full Name</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control" name="name"
-                                                    value="{{ old('name', $user->name) }}" />
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Email</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control"
-                                                    value="{{ old('email', $user->email) }}" />
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Profile Picture</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input type="file" class="form-control" name="picture" />
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <h6 class="col-sm-3 text-capitalized">old Image</h6>
-                                                <div class="col-sm-9 mx-2 mt-2">
-                                                    <img @if (Auth::user()->profile_Photo) src="{{ asset(Auth::user()->profile_Photo) }}" @else src="{{ asset('uploads/no-image.png') }}" @endif
-                                                        width="150" height="180" class="img-fluid rounded">
-                                                </div>
-                                                {{-- <img @if ($item->image) src="{{ asset($item->image) }}" @else src="{{ asset('uploads/no-image.png') }}" @endif
-                                                    width="100" alt=""> --}}
-                                            </div>
-                                        </div>
 
-                                        <div class="row">
+                                        <!-- Image Preview --->
+
+                                        <div class="d-flex gap-2 justify-content-between align-items-center">
+                                            <div class="col-sm-8">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="mb-0">Name</label>
+                                                        <input type="text" class="form-control my-1"
+                                                            name="name" value="{{ old('name', $user->name) }}" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="mb-0">Email</label>
+                                                        <input type="text" class="form-control my-1"
+                                                            name="email" value="{{ old('email', $user->email) }}" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="image" class="form-label">Select Image</label>
+                                                        <input type="file" name="picture" id="image"
+                                                            class="form-control my-1" accept="image/*"
+                                                            onchange="previewImage(event)">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <!-- Preview Box -->
+                                                <div class="mb-3 bg-light" id="preview-container"
+                                                    style="position: relative; display: block; width:340px; height: 215px;">
+                                                    <img id="preview"
+                                                        src="https://www.pngplay.com/wp-content/uploads/8/Upload-Icon-Image-Transparent-Image.png"
+                                                        alt="Preview Image" width="340"
+                                                        style="border:1px solid #ccc; padding:5px; border-radius:8px;"
+                                                        height="216">
+
+                                                    <!-- ❌ Remove Button -->
+                                                    <button type="button" id="removePreview"
+                                                        style="position:absolute; top:25px; right:15px; background:red; color:white; border:none; border-radius:50%; width:25px; height:25px; cursor:pointer;">
+                                                        ✖
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="">
                                             <div class="col-sm-3"></div>
                                             <div class="col-sm-9 text-secondary">
                                                 <input type="submit" class="btn btn-primary px-4"
-                                                    value="Save Changes" />
+                                                    value="Update Profile"/>
                                             </div>
                                         </div>
                                     </form>
@@ -353,6 +360,32 @@
                 }
             });
 
+
+
+        });
+
+
+        // 3rd Example
+
+        const defaultImage = "https://www.pngplay.com/wp-content/uploads/8/Upload-Icon-Image-Transparent-Image.png"; // আপনার default image path
+
+        function previewImage(event) {
+            let input = event.target;
+            let reader = new FileReader();
+
+            reader.onload = function() {
+                document.getElementById('preview').src = reader.result;
+            };
+
+            if (input.files && input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ❌ Remove Preview => reset to default
+        document.getElementById('removePreview').addEventListener('click', function() {
+            document.getElementById('preview').src = defaultImage; // default এ ফিরবে
+            document.getElementById('image').value = ""; // clear input
         });
     </script>
 </body>

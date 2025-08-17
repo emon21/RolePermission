@@ -56,11 +56,11 @@
                         </li>
                     @endcan
 
-                    @can('permission-menu')
+                    
                         <li>
                             <a href="{{ route('permission.index') }}"><i class='bx bx-radio-circle'></i>All Permission</a>
                         </li>
-                    @endcan
+                   
                 </ul>
             </li>
         @endcan

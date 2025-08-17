@@ -49,15 +49,30 @@ class ProfileController extends Controller
         // $userProfile = UserProfile::where('user_id', $request->user()->id)->first();
         // $userProfile->update($request->all());
 
-        if ($request->name) {
-            $request->user()->name = $request->name;
-        }
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        // Auth user
 
         $user = Auth::user();
+
+        // if ($request->name) {
+        //     $request->user()->name = $request->name;
+        // }
+
+        // if ($request->user()->isDirty('email')) {
+        //     $request->user()->email_verified_at = null;
+        // }
+
+
+        $user = User::find($user->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+       
+
+        # update user
+
+        // $user->update($request->all());
+        // User::where('id', $user->id)->update();
+       
 
 
         # User Profile Setting Update
@@ -65,7 +80,7 @@ class ProfileController extends Controller
         $userProfile = UserProfile::where('user_id', $user->id)->first();
         // $userProfile = UserProfile::all();
         // $userProfile = new UserProfile();
-    
+
         $userProfile->user_id = $user->id;
         $userProfile->website = $request->website;
         $userProfile->github_url = $request->github_url;
@@ -74,7 +89,7 @@ class ProfileController extends Controller
         $userProfile->linkedin_url = $request->linkedin_url;
         $userProfile->instagram_url = $request->instagram_url;
 
-        
+
 
         // # User Profile Update
 
@@ -91,13 +106,14 @@ class ProfileController extends Controller
             // $url = $file->move(public_path('uploads/car'), $filename);
             $url = $file->move('uploads/profile/', $filename);
             $request->user()->profile_Photo = $url;
-            $request->user()->save();
+            // $request->user()->save();
         }
 
         // return Redirect::route('profile')->with('success', 'Image uploaded successfully!')
         //     ->with('image', $filename);
 
         $userProfile->save();
+
 
         return Redirect::route('profile')->with('success', 'profile-updated');
     }

@@ -24,8 +24,21 @@ class UserSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'superadmin@mail.com',
             'password' => bcrypt('12345678'),
-            'profile_Photo' => fake()->addProvider(User::class),
+            'profile_Photo' => "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg",
         ]);
+
+        # User Profile
+
+        $userProfile = new UserProfile();
+        $userProfile->user_id = $superAdmin->id;
+        $userProfile->website = fake()->url();
+        $userProfile->github_url = fake()->url();
+        $userProfile->facebook_url = fake()->url();
+        $userProfile->twitter_url = fake()->url();
+        $userProfile->linkedin_url = fake()->url();
+        $userProfile->instagram_url = fake()->url();
+        $userProfile->save();
+
 
         $admin = User::create([
             'name' => 'Admin',
@@ -57,18 +70,5 @@ class UserSeeder extends Seeder
         #Assign Role to User
         $superAdmin->assignRole($role);
         $admin->syncRoles($role);
-
-
-        # User Profile
-
-        $userProfile = new UserProfile();
-        $userProfile->user_id = $superAdmin->id;
-        $userProfile->website = fake()->url();
-        $userProfile->github_url = fake()->url();
-        $userProfile->facebook_url = fake()->url();
-        $userProfile->twitter_url = fake()->url();
-        $userProfile->linkedin_url = fake()->url();
-        $userProfile->instagram_url = fake()->url();
-        $userProfile->save();
     }
 }
